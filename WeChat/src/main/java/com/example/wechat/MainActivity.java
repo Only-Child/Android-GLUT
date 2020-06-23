@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
                 case R.id.person:
                     f = new Person_Fragment();//创建第四个Fragment
                     break;
+
                 default:
                     break;
             }
