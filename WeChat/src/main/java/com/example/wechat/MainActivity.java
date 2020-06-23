@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
                     break;
 
                 default:
+
                     break;
             }
             ft.replace(R.id.fragment, f); //替换Fragment
