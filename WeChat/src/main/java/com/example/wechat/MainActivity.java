@@ -18,18 +18,18 @@ public class MainActivity extends Activity {
         ImageView shoppingcart = (ImageView) findViewById(R.id.shoppingcart);//获取布局文件的第三个导航图片
         ImageView person = (ImageView) findViewById(R.id.person);//获取布局文件的第四个导航图片
 
-        home.setOnClickListener(l);//为第一个导航图片添加单机事件
-        extend.setOnClickListener(l);//为第二个导航图片添加单机事件
-        shoppingcart.setOnClickListener(l);//为第三个导航图片添加单机事件
-        person.setOnClickListener(l);//为第四个导航图片添加单机事件
+        home.setOnClickListener(onclick);//为第一个导航图片添加单机事件
+        extend.setOnClickListener(onclick);//为第二个导航图片添加单机事件
+        shoppingcart.setOnClickListener(onclick);//为第三个导航图片添加单机事件
+        person.setOnClickListener(onclick);//为第四个导航图片添加单机事件
 
-        // ssss
+
 
 
 
     }
     //创建单机事件监听器
-    View.OnClickListener l = new View.OnClickListener() {
+    View.OnClickListener onclick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             FragmentManager fm = getFragmentManager();   // 获取Fragment
