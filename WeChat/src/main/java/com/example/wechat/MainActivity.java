@@ -18,6 +18,7 @@ public class MainActivity extends Activity {
         ImageView shoppingcart = (ImageView) findViewById(R.id.shoppingcart);//获取布局文件的第三个导航图片
         ImageView person = (ImageView) findViewById(R.id.person);//获取布局文件的第四个导航图片
 
+
         home.setOnClickListener(onclick);//为第一个导航图片添加单机事件
         extend.setOnClickListener(onclick);//为第二个导航图片添加单机事件
         shoppingcart.setOnClickListener(onclick);//为第三个导航图片添加单机事件
