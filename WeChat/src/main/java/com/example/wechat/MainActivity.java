@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
         shoppingcart.setOnClickListener(l);//为第三个导航图片添加单机事件
         person.setOnClickListener(l);//为第四个导航图片添加单机事件
 
-
+        // ssss
 
 
 
