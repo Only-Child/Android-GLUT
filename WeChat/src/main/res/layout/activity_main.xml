@@ -8,17 +8,14 @@
 
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/pu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffff"
-        android:layout_marginTop="50dp"/>
-    <fragment
+
+    <LinearLayout
         android:id="@+id/fragment"
-        android:name="com.example.wechat.Home_Fragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:name="com.example.wechat.Home_Fragment"
+        ></LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
