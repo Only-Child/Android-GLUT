@@ -5,10 +5,12 @@
     android:layout_height="match_parent"
     >
 
+<ViewFlipper
+    android:id="@+id/viewFlipper"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="0dp"
+    />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="首页"
-        />
+
 </RelativeLayout>

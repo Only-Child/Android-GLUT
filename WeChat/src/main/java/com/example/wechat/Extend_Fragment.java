@@ -18,4 +18,8 @@ public class Extend_Fragment extends Fragment {
         View view=inflater.inflate(R.layout.activity_extend__fragment,null);
         return view;
     }
+
+
+
+
 }

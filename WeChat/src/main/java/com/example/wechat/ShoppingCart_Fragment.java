@@ -18,16 +18,4 @@ public class ShoppingCart_Fragment extends Fragment {
         return view;
     }
 
-//public void onActivityCreated(@Nullable Bundle save) {
-//    super.onActivityCreated(save);
-////    定义一个按钮
-//    Button button=getActivity().findViewById(R.id.btn);
-//    button.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-////            设置单击显示文本
-//            Toast.makeText(getActivity(),"你点击了小可爱",Toast.LENGTH_SHORT).show();
-//        }
-//    });
-//}
 }
