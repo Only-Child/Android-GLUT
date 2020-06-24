@@ -3,20 +3,54 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import com.example.wechat.pojo.Goods;
+import com.example.wechat.utils.MySqliteHelper;
+import com.example.wechat.utils.StaggeredGridAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
+
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+        recyclerView=findViewById(R.id.pu);
         ImageView home = (ImageView) findViewById(R.id.home);//获取布局文件的第一个导航图片
         ImageView extend = (ImageView) findViewById(R.id.extend);//获取布局文件的第二个导航图片
         ImageView shoppingcart = (ImageView) findViewById(R.id.shoppingcart);//获取布局文件的第三个导航图片
         ImageView person = (ImageView) findViewById(R.id.person);//获取布局文件的第四个导航图片
+
+
+        //设置布局启动器
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        //添加装饰--设置四周间隔
+        recyclerView.addItemDecoration(new MyDecoration());
+        //设置适配器
+        recyclerView.setAdapter(new StaggeredGridAdapter(MainActivity.this, new StaggeredGridAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int pos) {
+                Toast.makeText(MainActivity.this,"click..."+pos,Toast.LENGTH_SHORT).show();
+            }
+        }));
 
 
         home.setOnClickListener(onclick);//为第一个导航图片添加单机事件
@@ -56,6 +90,14 @@ public class MainActivity extends Activity {
             ft.commit(); //提交事务
         }
     };
-
-
+    //自定义装饰
+    class MyDecoration extends RecyclerView.ItemDecoration{
+        @Override
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            int gap=getResources().getDimensionPixelSize(R.dimen.dividerHeight2);
+            int gap1=getResources().getDimensionPixelSize(R.dimen.dividerHeight3);
+            outRect.set(gap,gap,gap,gap);
+        }
+    }
 }
