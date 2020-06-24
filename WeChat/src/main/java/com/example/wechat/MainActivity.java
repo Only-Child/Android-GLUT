@@ -69,7 +69,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 break;
         }
         transaction.commit();
-        /*积分会计师*/
+        
     }
 
 }
