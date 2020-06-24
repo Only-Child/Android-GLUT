@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Home_Fragment"></activity>
+        <activity android:name=".Home_Fragment" />
         <activity android:name=".Extend_Fragment" />
         <activity android:name=".Person_Fragment" />
         <activity android:name=".ShoppingCart_Fragment" />
