@@ -1,5 +1,6 @@
 package com.example.wechat.info;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
@@ -14,32 +15,20 @@ public class Info_1Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_1);
-
-
-
-
-
-
-
-
-    }
-    private void setActionBar() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ActionBar actionBar = getActionBar();
-        // 显示返回按钮
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        // 去掉logo图标
-        actionBar.setDisplayShowHomeEnabled(false);
-        actionBar.setTitle("返回");
+
     }
 
+    //设置返回按钮
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:   //返回键的id
-                this.finish();
-                return false;
-            default:
-                return super.onOptionsItemSelected(item);
+            case android.R.id.home:
+                finish();
+                break;
         }
+        return true;
     }
+
 }

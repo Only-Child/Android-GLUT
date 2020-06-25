@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.example.wechat.R;
+import com.example.wechat.pojo.Goods;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +29,7 @@ import java.util.List;
 public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdapter.LinearViewHolder> {
 
 
-    private List<String> goodsimg=new ArrayList<>();
-//    private List<String> gooditem=new ArrayList<>();
+    private List<Goods> goodsimg=new ArrayList<>();
     private Context mcontext;
     private OnItemClickListener monItemClickListener;
 
@@ -60,11 +60,17 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
         //从数据库中获取商品数据
         SQLiteDatabase database = create(mcontext);
         //查询商品图片并保存
-        Cursor cursor = database.query("goods", new String[]{"src"}, null, null,null,null,null);
+        Cursor cursor = database.query("goods", null, null, null,null,null,null);
         if(cursor.moveToFirst()){
             for(int i = 0; i<cursor.getCount();i++)
             {
-                goodsimg.add(cursor.getString(cursor.getColumnIndex("src")));
+                Goods goodsitem=new Goods();
+                goodsitem.setName(cursor.getString(cursor.getColumnIndex("name")));
+                goodsitem.setCategory(cursor.getString(cursor.getColumnIndex("category")));
+                goodsitem.setPrice( cursor.getDouble(cursor.getColumnIndex("price")));
+                goodsitem.setSrc(cursor.getString(cursor.getColumnIndex("src")));
+                goodsitem.setStorage(cursor.getInt(cursor.getColumnIndex("storage")));
+                goodsimg.add(goodsitem);
                 cursor.moveToNext();
             }
         }
@@ -72,14 +78,14 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
         for(int i=0;i<50;i++){
             if(position==i){
                 // 拿到图片名字
-                String iconName=goodsimg.get(i);
+                String iconName=goodsimg.get(i).getSrc();
                 // 拿到图片ID
                 int icon = mcontext.getResources().getIdentifier(iconName, "drawable", mcontext.getPackageName());
                 // 设置图片
                 Glide.with(mcontext).load(icon).into(holder.iView);
 //                holder.iView.setImageResource(icon);
                 //设置文字
-                holder.textView.setText("joker");
+                holder.textView.setText(goodsimg.get(i).getName()+"   "+goodsimg.get(i).getPrice());
             }
         }
 

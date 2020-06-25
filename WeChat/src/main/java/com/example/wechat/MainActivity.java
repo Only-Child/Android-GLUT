@@ -30,7 +30,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     ImageView person;
 
 
-    private RecyclerView recyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
 
-        recyclerView=findViewById(R.id.pu);
         ImageView home = (ImageView) findViewById(R.id.home);//获取布局文件的第一个导航图片
         ImageView extend = (ImageView) findViewById(R.id.extend);//获取布局文件的第二个导航图片
         ImageView shoppingcart = (ImageView) findViewById(R.id.shoppingcart);//获取布局文件的第三个导航图片
