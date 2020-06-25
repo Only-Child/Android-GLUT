@@ -5,25 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-;'    <fragment
-        android:id="@+id/fragment"
-        android:name="com.example.wechat.Home_Fragment"
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pu"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:layout_marginTop="50dp"/>
+
+    <LinearLayout
+        android:id="@+id/fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:name="com.example.wechat.Home_Fragment"
+        >
+        <!---->
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
 
         <ImageView
             android:id="@+id/home"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:src="@drawable/bottom_1"
+            android:src="@drawable/home"
             />
         <ImageView
             android:id="@+id/extend"
@@ -37,14 +49,14 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:src="@drawable/bottom_2"
+            android:src="@drawable/car"
             />
         <ImageView
             android:id="@+id/person"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:src="@drawable/bottom_4"
+            android:src="@drawable/person"
             />
 
     </LinearLayout>
