@@ -15,9 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.example.wechat.pojo.Goods;
-import com.example.wechat.utils.MySqliteHelper;
-import com.example.wechat.utils.StaggeredGridAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,14 +79,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 transaction.replace(R.id.fragment, extend_fragment);
 //                extend.setImageResource(R.drawable.bottom_2);
                 break;
-            case R.id.shoppingcart:
+            case R.id.person:
                 if (person_fragment == null) {
                     person_fragment = new Person_Fragment();
                 }
                 transaction.replace(R.id.fragment, person_fragment);
 //                shoppingcart.setImageResource(R.drawable.bottom_3);
                 break;
-            case R.id.person:
+            case R.id.shoppingcart:
                 if (shoppingCart_fragment == null) {
                     shoppingCart_fragment = new ShoppingCart_Fragment();
                 }
