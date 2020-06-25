@@ -49,9 +49,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         ImageView person = (ImageView) findViewById(R.id.person);//获取布局文件的第四个导航图片
 
 
-
-
-
         home.setOnClickListener(this);//为第一个导航图片添加单机事件
         extend.setOnClickListener(this);//为第二个导航图片添加单机事件
         shoppingcart.setOnClickListener(this);//为第三个导航图片添加单机事件
@@ -62,7 +59,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
     }
-//    //创建单机事件监听器
+   //创建单机事件监听器
 
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.wechat;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.example.wechat.info.Info_1Activity;
+import com.example.wechat.info.Info_2Activity;
+import com.example.wechat.info.Info_3Activity;
+import com.example.wechat.info.Info_4Activity;
+import com.example.wechat.info.Info_5Activity;
 import com.example.wechat.utils.StaggeredGridAdapter;
 
 /**
@@ -39,6 +45,30 @@ public class Home_Fragment extends Fragment {
             @Override
             public void onClick(int pos) {
                 Toast.makeText(getActivity(),"click..."+pos,Toast.LENGTH_SHORT).show();
+                Intent intent=null;
+                switch (pos){
+                    case 0:
+                        intent=new Intent(getActivity(), Info_1Activity.class);
+                        break;
+                    case 1:
+                        intent=new Intent(getActivity(), Info_2Activity.class);
+                        break;
+                    case 2:
+                        intent=new Intent(getActivity(), Info_3Activity.class);
+                        break;
+
+                    case 3:
+                        intent=new Intent(getActivity(), Info_4Activity.class);
+                        break;
+
+                    case 4:
+                        intent=new Intent(getActivity(), Info_5Activity.class);
+                        break;
+                    default :
+                        break;
+                }if(intent!=null) {
+                    startActivity(intent);
+                }
             }
         }));
 

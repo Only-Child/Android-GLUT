@@ -9,11 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.wechat.R;
 
 import java.util.ArrayList;
@@ -73,7 +76,8 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
                 // 拿到图片ID
                 int icon = mcontext.getResources().getIdentifier(iconName, "drawable", mcontext.getPackageName());
                 // 设置图片
-                holder.iView.setImageResource(icon);
+                Glide.with(mcontext).load(icon).into(holder.iView);
+//                holder.iView.setImageResource(icon);
                 //设置文字
                 holder.textView.setText("joker");
             }
