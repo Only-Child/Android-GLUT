@@ -70,7 +70,7 @@ public class ShoppingCart_Fragment extends Fragment {
             Cursor carsum = db.rawQuery("select sum(total) from car where uid = ?", new String[]{String.valueOf(uid)});
             carsum.moveToNext();
             double sum = carsum.getDouble(carsum.getColumnIndex("sum(total)"));
-            textView.setText("合计：" + String.format("%.2f", sum));
+            textView.setText("￥" + String.format("%.2f", sum));
 
 
             cursor.close();
@@ -118,7 +118,7 @@ public class ShoppingCart_Fragment extends Fragment {
             titleView.setText(name);
             // 获取商品价格view，并设置值
             TextView priceView = item.findViewById(R.id.tv_price);
-            priceView.setText(price);
+            priceView.setText("￥" + price);
             //  获取商品数量view，并设置值
             TextView amountView = item.findViewById(R.id.tv_amount);
             amountView.setText(String.valueOf(amount));
@@ -130,11 +130,9 @@ public class ShoppingCart_Fragment extends Fragment {
             // 设置图片
             Glide.with(getActivity()).load(icon).into(iconView);
 
-
             // + - 按钮功能实现
             item.findViewById(R.id.btn_incr).setOnClickListener(new MyButtonOnClickListener(uid, position, amountView, price, view));
             item.findViewById(R.id.btn_desc).setOnClickListener(new MyButtonOnClickListener(uid, position, amountView, price, view));
-
 
             goodsCorsor.close();
             cursor.close();
@@ -184,7 +182,7 @@ public class ShoppingCart_Fragment extends Fragment {
                     Cursor carsum = db.rawQuery("select sum(total) from car where uid = ?", new String[]{String.valueOf(uid)});
                     carsum.moveToNext();
                     double sum = carsum.getDouble(carsum.getColumnIndex("sum(total)"));
-                    textView.setText("合计：" + String.format("%.2f", sum));
+                    textView.setText("￥" + String.format("%.2f", sum));
 
                     cursor.close();
                     db.close();
@@ -213,7 +211,7 @@ public class ShoppingCart_Fragment extends Fragment {
                     Cursor carsum = db.rawQuery("select sum(total) from car where uid = ?", new String[]{String.valueOf(uid)});
                     carsum.moveToNext();
                     double sum = carsum.getDouble(carsum.getColumnIndex("sum(total)"));
-                    textView.setText("合计：" + String.format("%.2f", sum));
+                    textView.setText("￥" + String.format("%.2f", sum));
 
                     cursor.close();
                     db.close();
