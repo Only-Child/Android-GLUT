@@ -21,7 +21,8 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:background="#ffffff">
+        android:background="#ffffff"
+        >
 
         <ImageView
             android:id="@+id/home"

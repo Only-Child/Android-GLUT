@@ -41,12 +41,6 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
         mcontext=context;
         monItemClickListener=onItemClickListener;
     }
-   //生成数据库实例
-    public  SQLiteDatabase create(Context context) {
-        MySqliteHelper mySQLDatabase = new MySqliteHelper(mcontext, "db", null, 1);
-        return mySQLDatabase.getWritableDatabase();
-
-    }
 
     @NonNull
     @Override
@@ -57,8 +51,9 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
 
     @Override
     public void onBindViewHolder(@NonNull StaggeredGridAdapter.LinearViewHolder holder, final int position) {
+
         //从数据库中获取商品数据
-        SQLiteDatabase database = create(mcontext);
+        SQLiteDatabase database = DataBaseOperate.create(mcontext);
         //查询商品图片并保存
         Cursor cursor = database.query("goods", null, null, null,null,null,null);
         if(cursor.moveToFirst()){
@@ -85,7 +80,7 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
                 Glide.with(mcontext).load(icon).into(holder.iView);
 //                holder.iView.setImageResource(icon);
                 //设置文字
-                holder.textView.setText(goodsimg.get(i).getName()+"   "+goodsimg.get(i).getPrice());
+                holder.textView.setText(goodsimg.get(i).getName()+"   ￥"+goodsimg.get(i).getPrice());
             }
         }
 
