@@ -7,10 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
+
+import java.math.BigDecimal;
 
 /**
  * Created by Administrator on 2016/2/18.
@@ -24,11 +29,17 @@ public class ShoppingCart_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.activity_shoppingcart__fragment,null);
 
+        // 模拟用户id
+        int uid = 1;
+
+
         myOpenHelper = new MyOpenHelper(getActivity());
 
         // 获取listview设置适配器
         ListView listView = view.findViewById(R.id.lv_car);
-        listView.setAdapter(new MyAdapter());
+        // 设置监听器，传入用户id和当前view对象
+        listView.setAdapter(new MyAdapter(uid, view));
+
 
         return view;
     }
@@ -37,18 +48,30 @@ public class ShoppingCart_Fragment extends Fragment {
     // 适配器
     private class MyAdapter extends BaseAdapter{
 
-        private Integer uid;
+        private Integer uid; //用户id
+        private View view;
+
+        public MyAdapter(Integer uid, View view) {
+            this.uid = uid;
+            this.view = view;
+        }
 
         @Override
         public int getCount() {
-            // 获取当前登录用户 id
-            uid = 1; // 模拟用户id
 
             // 查询用户购物车总记录条数
             SQLiteDatabase db = myOpenHelper.getReadableDatabase();
             Cursor cursor = db.rawQuery("select count(*) from car where uid = ?", new String[]{String.valueOf(uid)});
             cursor.moveToNext();
             int count = cursor.getInt(cursor.getColumnIndex("count(*)"));
+
+            // 设置购物车合计总价
+            TextView textView = view.findViewById(R.id.tv_carsum);
+            Cursor carsum = db.rawQuery("select sum(total) from car where uid = ?", new String[]{String.valueOf(uid)});
+            carsum.moveToNext();
+            double sum = carsum.getDouble(carsum.getColumnIndex("sum(total)"));
+            textView.setText("合计：" + String.format("%.2f", sum));
+
 
             cursor.close();
             db.close();
@@ -99,10 +122,18 @@ public class ShoppingCart_Fragment extends Fragment {
             //  获取商品数量view，并设置值
             TextView amountView = item.findViewById(R.id.tv_amount);
             amountView.setText(String.valueOf(amount));
+            // 获取商品图片view，并设置值
+            ImageView iconView = item.findViewById(R.id.iv_icon);
+            String iconName = "item_" + gid;
+            // 拿到图片ID
+            int icon = getActivity().getResources().getIdentifier(iconName, "drawable", getActivity().getPackageName());
+            // 设置图片
+            Glide.with(getActivity()).load(icon).into(iconView);
+
 
             // + - 按钮功能实现
-            item.findViewById(R.id.btn_incr).setOnClickListener(new MyButtonOnClickListener(uid, position, amountView, price));
-            item.findViewById(R.id.btn_desc).setOnClickListener(new MyButtonOnClickListener(uid, position, amountView, price));
+            item.findViewById(R.id.btn_incr).setOnClickListener(new MyButtonOnClickListener(uid, position, amountView, price, view));
+            item.findViewById(R.id.btn_desc).setOnClickListener(new MyButtonOnClickListener(uid, position, amountView, price, view));
 
 
             goodsCorsor.close();
@@ -116,24 +147,25 @@ public class ShoppingCart_Fragment extends Fragment {
     // 自定义按钮点击监听器
     private class MyButtonOnClickListener implements View.OnClickListener{
 
-        private int uid;
-        private int position;
-        TextView amountView;
-        String price;
+        private int uid; // 用户id
+        private int position; // item索引
+        TextView amountView; // 商品数量view
+        String price; // 商品单价
+        View view;  // 合计view
 
-        public MyButtonOnClickListener(int uid, int position, TextView amountView, String price) {
+        public MyButtonOnClickListener(int uid, int position, TextView amountView, String price, View view) {
             this.uid = uid;
             this.position = position;
             this.amountView = amountView;
             this.price = price;
+            this.view = view;
         }
-
 
         @Override
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.btn_incr:{
-                    // 修改购物车中TextView
+                    // 购物车数量 TextView，  +1
                     amountView.setText(String.valueOf((Integer.parseInt(amountView.getText().toString()) + 1)));
 
                     // 获取商品gid
@@ -147,11 +179,21 @@ public class ShoppingCart_Fragment extends Fragment {
                     // 商品总价增加
                     db.execSQL("update car set total = total + ? where gid = ? and uid = ?", new String[]{String.valueOf(price), String.valueOf(gid), String.valueOf(uid)});
 
+                    // 购物车合计总价变化
+                    TextView textView = view.findViewById(R.id.tv_carsum);
+                    Cursor carsum = db.rawQuery("select sum(total) from car where uid = ?", new String[]{String.valueOf(uid)});
+                    carsum.moveToNext();
+                    double sum = carsum.getDouble(carsum.getColumnIndex("sum(total)"));
+                    textView.setText("合计：" + String.format("%.2f", sum));
+
                     cursor.close();
                     db.close();
                     break;
                 }
                 case R.id.btn_desc:{
+                    if (Integer.parseInt(amountView.getText().toString()) == 1){
+                        return;
+                    }
                     // 修改购物车中TextView
                     amountView.setText(String.valueOf((Integer.parseInt(amountView.getText().toString()) - 1)));
 
@@ -165,6 +207,13 @@ public class ShoppingCart_Fragment extends Fragment {
                     db.execSQL("update car set amount = amount - 1 where gid = ? and uid = ?", new String[]{String.valueOf(gid), String.valueOf(uid)});
                     // 商品总价减少
                     db.execSQL("update car set total = total - ? where gid = ? and uid = ?", new String[]{String.valueOf(price), String.valueOf(gid), String.valueOf(uid)});
+
+                    // 购物车合计总价变化
+                    TextView textView = view.findViewById(R.id.tv_carsum);
+                    Cursor carsum = db.rawQuery("select sum(total) from car where uid = ?", new String[]{String.valueOf(uid)});
+                    carsum.moveToNext();
+                    double sum = carsum.getDouble(carsum.getColumnIndex("sum(total)"));
+                    textView.setText("合计：" + String.format("%.2f", sum));
 
                     cursor.close();
                     db.close();
