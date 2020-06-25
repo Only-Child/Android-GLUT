@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_launcher_background"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:text="商品名称"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="13sp"
+        android:textSize="25sp"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:layout_below="@+id/tv_title"
+        android:text="商品价格"
+        android:layout_marginTop="27dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="20sp"
+        android:textColor="#ff0000"/>
+
+    <ImageButton
+        android:id="@+id/btn_desc"
+        android:src="@drawable/icon_reduce"
+        android:layout_width="40sp"
+        android:layout_height="40sp"
+        android:layout_toLeftOf="@id/tv_amount"
+        android:layout_marginTop="70sp"
+        android:scaleType="centerInside"/>
+    <TextView
+        android:id="@+id/tv_amount"
+        android:layout_width="40sp"
+        android:layout_height="40sp"
+        android:layout_toLeftOf="@+id/btn_incr"
+        android:layout_marginTop="70sp"
+        android:gravity="center"/>
+    <ImageButton
+        android:id="@+id/btn_incr"
+        android:src="@drawable/icon_add"
+        android:layout_width="40sp"
+        android:layout_height="40sp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10sp"
+        android:scaleType="centerInside"
+        android:layout_marginTop="70sp"/>
+
+
+</RelativeLayout>

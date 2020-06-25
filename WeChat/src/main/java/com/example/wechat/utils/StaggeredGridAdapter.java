@@ -1,14 +1,10 @@
 package com.example.wechat.utils;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.bumptech.glide.Glide;
-import com.example.wechat.MainActivity;
 import com.example.wechat.R;
+import com.example.wechat.pojo.Goods;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +29,7 @@ import java.util.List;
 public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdapter.LinearViewHolder> {
 
 
-    private List<String> goodsimg=new ArrayList<>();
-//    private List<String> gooditem=new ArrayList<>();
+    private List<Goods> goodsimg=new ArrayList<>();
     private Context mcontext;
     private OnItemClickListener monItemClickListener;
 
@@ -46,12 +41,6 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
         mcontext=context;
         monItemClickListener=onItemClickListener;
     }
-   //生成数据库实例
-    public  SQLiteDatabase create(Context context) {
-        MySqliteHelper mySQLDatabase = new MySqliteHelper(mcontext, "db", null, 1);
-        return mySQLDatabase.getWritableDatabase();
-
-    }
 
     @NonNull
     @Override
@@ -62,14 +51,21 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
 
     @Override
     public void onBindViewHolder(@NonNull StaggeredGridAdapter.LinearViewHolder holder, final int position) {
+
         //从数据库中获取商品数据
-        SQLiteDatabase database = create(mcontext);
+        SQLiteDatabase database = DataBaseOperate.create(mcontext);
         //查询商品图片并保存
-        Cursor cursor = database.query("goods", new String[]{"src"}, null, null,null,null,null);
+        Cursor cursor = database.query("goods", null, null, null,null,null,null);
         if(cursor.moveToFirst()){
             for(int i = 0; i<cursor.getCount();i++)
             {
-                goodsimg.add(cursor.getString(cursor.getColumnIndex("src")));
+                Goods goodsitem=new Goods();
+                goodsitem.setName(cursor.getString(cursor.getColumnIndex("name")));
+                goodsitem.setCategory(cursor.getString(cursor.getColumnIndex("category")));
+                goodsitem.setPrice( cursor.getDouble(cursor.getColumnIndex("price")));
+                goodsitem.setSrc(cursor.getString(cursor.getColumnIndex("src")));
+                goodsitem.setStorage(cursor.getInt(cursor.getColumnIndex("storage")));
+                goodsimg.add(goodsitem);
                 cursor.moveToNext();
             }
         }
@@ -77,13 +73,14 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
         for(int i=0;i<50;i++){
             if(position==i){
                 // 拿到图片名字
-                String iconName=goodsimg.get(i);
+                String iconName=goodsimg.get(i).getSrc();
                 // 拿到图片ID
                 int icon = mcontext.getResources().getIdentifier(iconName, "drawable", mcontext.getPackageName());
                 // 设置图片
-                holder.iView.setImageResource(icon);
+                Glide.with(mcontext).load(icon).into(holder.iView);
+//                holder.iView.setImageResource(icon);
                 //设置文字
-                holder.textView.setText("joker");
+                holder.textView.setText(goodsimg.get(i).getName()+"   ￥"+goodsimg.get(i).getPrice());
             }
         }
 

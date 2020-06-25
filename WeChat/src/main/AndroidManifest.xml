@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".info.Info_5Activity" android:label="  "></activity>
+        <activity android:name=".info.Info_4Activity" android:label="  "/>
+        <activity android:name=".info.Info_3Activity" android:label="  "/>
+        <activity android:name=".info.Info_2Activity" android:label="  "/>
+        <activity android:name=".info.Info_1Activity" android:label="  "/>
         <activity android:name=".Home_Fragment" />
         <activity android:name=".Extend_Fragment" />
         <activity android:name=".Person_Fragment" />
