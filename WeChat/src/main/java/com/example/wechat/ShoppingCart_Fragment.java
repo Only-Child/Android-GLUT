@@ -1,4 +1,5 @@
 package com.example.wechat;
+
 import android.app.Fragment;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,10 +13,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import com.bumptech.glide.Glide;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/2/18.
@@ -27,7 +31,7 @@ public class ShoppingCart_Fragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.activity_shoppingcart__fragment,null);
+        View view = inflater.inflate(R.layout.activity_shoppingcart__fragment, null);
 
         // 模拟用户id
         int uid = 1;
@@ -46,7 +50,7 @@ public class ShoppingCart_Fragment extends Fragment {
 
 
     // 适配器
-    private class MyAdapter extends BaseAdapter{
+    private class MyAdapter extends BaseAdapter {
 
         private Integer uid; //用户id
         private View view;
@@ -91,6 +95,7 @@ public class ShoppingCart_Fragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
+
             // 查询出指定用户购物车表中数据（第 position + 1 行）
             SQLiteDatabase db = myOpenHelper.getReadableDatabase();
             Cursor cursor = db.rawQuery("select * from car where uid = ? limit ?,1", new String[]{String.valueOf(uid), String.valueOf(position)});
@@ -134,6 +139,9 @@ public class ShoppingCart_Fragment extends Fragment {
             item.findViewById(R.id.btn_incr).setOnClickListener(new MyButtonOnClickListener(uid, position, amountView, price, view));
             item.findViewById(R.id.btn_desc).setOnClickListener(new MyButtonOnClickListener(uid, position, amountView, price, view));
 
+            // 删除商品按钮
+            item.findViewById(R.id.btn_delete).setOnClickListener(new MyButtonOnClickListener(uid, position, amountView, price, view));
+
             goodsCorsor.close();
             cursor.close();
             db.close();
@@ -143,7 +151,7 @@ public class ShoppingCart_Fragment extends Fragment {
     }
 
     // 自定义按钮点击监听器
-    private class MyButtonOnClickListener implements View.OnClickListener{
+    private class MyButtonOnClickListener implements View.OnClickListener {
 
         private int uid; // 用户id
         private int position; // item索引
@@ -161,8 +169,8 @@ public class ShoppingCart_Fragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.btn_incr:{
+            switch (v.getId()) {
+                case R.id.btn_incr: { //购物车商品数量增加
                     // 购物车数量 TextView，  +1
                     amountView.setText(String.valueOf((Integer.parseInt(amountView.getText().toString()) + 1)));
 
@@ -188,8 +196,8 @@ public class ShoppingCart_Fragment extends Fragment {
                     db.close();
                     break;
                 }
-                case R.id.btn_desc:{
-                    if (Integer.parseInt(amountView.getText().toString()) == 1){
+                case R.id.btn_desc: {  //购物车商品数量减少
+                    if (Integer.parseInt(amountView.getText().toString()) == 1) {
                         return;
                     }
                     // 修改购物车中TextView
@@ -213,12 +221,39 @@ public class ShoppingCart_Fragment extends Fragment {
                     double sum = carsum.getDouble(carsum.getColumnIndex("sum(total)"));
                     textView.setText("￥" + String.format("%.2f", sum));
 
+                    // 释放资源
                     cursor.close();
                     db.close();
                     break;
                 }
+                case R.id.btn_delete: { //删除商品
+                    // 获取商品gid
+                    SQLiteDatabase db = myOpenHelper.getReadableDatabase();
+                    Cursor cursor = db.rawQuery("select * from car where uid = ? limit ?,1", new String[]{String.valueOf(uid), String.valueOf(position)});
+                    cursor.moveToNext();
+                    int gid = cursor.getInt(cursor.getColumnIndex("gid"));
+
+                    // 从购物车中删除该商品
+                    db.execSQL("delete from car where uid = ? and gid = ?", new String[]{String.valueOf(uid), String.valueOf(gid)});
+
+                    // 释放资源
+                    cursor.close();
+                    db.close();
+
+                    // 刷新
+                    refresh();
+                }
             }
         }
+    }
+
+    private void refresh() {
+        System.out.println("refresh...");
+        getActivity().getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment, new ShoppingCart_Fragment(), null)
+                .addToBackStack(null)
+                .commit();
     }
 
 }
