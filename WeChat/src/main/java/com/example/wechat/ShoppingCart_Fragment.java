@@ -46,6 +46,20 @@ public class ShoppingCart_Fragment extends Fragment {
         // 设置监听器，传入用户id和当前view对象
         listView.setAdapter(new MyAdapter(uid, view));
 
+        // 查询用户购物车总记录条数
+        SQLiteDatabase db = myOpenHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select count(*) from car where uid = ?", new String[]{String.valueOf(uid)});
+        cursor.moveToNext();
+
+        // 购物车为空
+        if (cursor.getInt(cursor.getColumnIndex("count(*)")) == 0){
+            // 隐藏结算条
+            view.findViewById(R.id.botm).setVisibility(View.GONE);
+
+            Toast.makeText(getActivity(), "购物车为空，赶紧去购物吧~", Toast.LENGTH_SHORT).show();
+        }
+
+
         // 结算
         view.findViewById(R.id.pay).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +73,8 @@ public class ShoppingCart_Fragment extends Fragment {
             }
         });
 
+        cursor.close();
+        db.close();
         return view;
     }
 
