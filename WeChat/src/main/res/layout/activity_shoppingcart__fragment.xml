@@ -51,6 +51,7 @@
             android:textSize="23sp" />
 
         <TextView
+            android:id="@+id/pay"
             android:layout_width="100sp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"

@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,7 +27,8 @@ import java.util.List;
  */
 public class ShoppingCart_Fragment extends Fragment {
 
-    MyOpenHelper myOpenHelper;
+    private MyOpenHelper myOpenHelper;
+    private int uid;
 
     @Nullable
     @Override
@@ -34,7 +36,7 @@ public class ShoppingCart_Fragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_shoppingcart__fragment, null);
 
         // 模拟用户id
-        int uid = 1;
+        uid = 1;
 
 
         myOpenHelper = new MyOpenHelper(getActivity());
@@ -44,6 +46,18 @@ public class ShoppingCart_Fragment extends Fragment {
         // 设置监听器，传入用户id和当前view对象
         listView.setAdapter(new MyAdapter(uid, view));
 
+        // 结算
+        view.findViewById(R.id.pay).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SQLiteDatabase db = myOpenHelper.getReadableDatabase();
+                db.execSQL("delete from car where uid = ?", new String[]{String.valueOf(uid)});
+                refresh();
+                Toast.makeText(getActivity(), "购物车已清空~", Toast.LENGTH_SHORT).show();
+
+                db.close();
+            }
+        });
 
         return view;
     }
@@ -247,6 +261,7 @@ public class ShoppingCart_Fragment extends Fragment {
         }
     }
 
+    // 刷新fragment
     private void refresh() {
         System.out.println("refresh...");
         getActivity().getFragmentManager()
