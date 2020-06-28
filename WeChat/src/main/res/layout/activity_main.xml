@@ -28,6 +28,7 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
+        android:background="#ffffff"
         >
 
         <ImageView
