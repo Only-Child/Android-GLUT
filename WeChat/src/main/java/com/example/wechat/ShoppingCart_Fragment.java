@@ -1,6 +1,7 @@
 package com.example.wechat;
 
 //import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -29,6 +30,9 @@ public class ShoppingCart_Fragment extends Fragment {
 
     private MyOpenHelper myOpenHelper;
     private int uid;
+    private String getSpU;//新加
+    SharedPreferences sp;  //新加
+
 
     @Nullable
     @Override
@@ -38,6 +42,9 @@ public class ShoppingCart_Fragment extends Fragment {
         // 模拟用户id
         uid = 1;
 
+       /*新加*/
+        sp=getContext().getSharedPreferences("mrsoft",getContext().MODE_PRIVATE);
+        getSpU=sp.getString("username","");
 
         myOpenHelper = new MyOpenHelper(getActivity());
 

@@ -21,19 +21,39 @@
         <activity android:name=".Login_Activity" />
         <activity
             android:name=".info.Info_5Activity"
-            android:label="  " />
+            android:label="  " >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".info.Info_4Activity"
-            android:label="  " />
+            android:label="  ">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".info.Info_3Activity"
-            android:label="  " />
+            android:label="  ">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".info.Info_2Activity"
-            android:label="  " />
+            android:label="  ">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".info.Info_1Activity"
-            android:label="  " />
+            android:label="  ">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity android:name=".Home_Fragment" />
         <activity android:name=".Extend_Fragment" />
         <activity android:name=".Person_Fragment" />

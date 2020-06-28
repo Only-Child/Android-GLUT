@@ -2,6 +2,7 @@ package com.example.wechat.info;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import android.app.ActionBar;
 import android.content.Context;
@@ -30,7 +31,9 @@ public class Info_1Activity extends AppCompatActivity {
         ActionBar actionBar = getActionBar();
         mtextView=findViewById(R.id.tv_info);
         mimageView=findViewById(R.id.miv);
-
+        if (NavUtils.getParentActivityName(Info_1Activity.this)!=null){     //显示返回按钮
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         //从数据库中获取商品数据
         SQLiteDatabase database = DataBaseOperate.create(Info_1Activity.this);
 

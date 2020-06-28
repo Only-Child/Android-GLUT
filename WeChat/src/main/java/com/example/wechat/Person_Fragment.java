@@ -30,6 +30,7 @@ public class Person_Fragment extends Fragment {
     SimpleAdapter adapter;
 
 
+
     int[] imageId = new int[]{R.drawable.img01, R.drawable.img02, R.drawable.img03,
             R.drawable.img04, R.drawable.img05, R.drawable.img06,
 
@@ -42,7 +43,6 @@ public class Person_Fragment extends Fragment {
         View view=inflater.inflate(R.layout.activity_person__fragment,null);
          sp=getContext().getSharedPreferences("mrsoft",getContext().MODE_PRIVATE);
 
-
         return view;
     }
 
@@ -54,7 +54,7 @@ public class Person_Fragment extends Fragment {
 
         ListView listView=getActivity().findViewById(R.id.listview);
 
-        String[] title = new String[]{"刘一", "修改密码", "浏览历史", "退出账号","添加1","添加2"}; // 定义并初始化保存列表项文字的数组
+        String[] title = new String[]{"账号："+getUser, "修改密码", "浏览历史", "退出账号","添加1","添加2"}; // 定义并初始化保存列表项文字的数组
         List<Map<String, Object>> listItems = new ArrayList<Map<String, Object>>(); // 创建一个list集合
         // 通过for循环将图片id和列表项文字放到Map中，并添加到list集合中
         for (int i = 0; i < imageId.length; i++) {
