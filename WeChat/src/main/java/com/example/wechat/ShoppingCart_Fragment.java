@@ -1,6 +1,6 @@
 package com.example.wechat;
 
-import android.app.Fragment;
+//import android.app.Fragment;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.fragment.app.Fragment;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
@@ -279,12 +279,9 @@ public class ShoppingCart_Fragment extends Fragment {
 
     // 刷新fragment
     private void refresh() {
+        ShoppingCart_Fragment shoppingCart_fragment=new ShoppingCart_Fragment();
         System.out.println("refresh...");
-        getActivity().getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment, new ShoppingCart_Fragment(), null)
-                .addToBackStack(null)
-                .commit();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, shoppingCart_fragment).addToBackStack(null).commitAllowingStateLoss();
     }
 
 }

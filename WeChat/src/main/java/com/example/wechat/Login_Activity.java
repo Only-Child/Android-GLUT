@@ -77,7 +77,7 @@ public class Login_Activity extends AppCompatActivity {
                         editor.commit();                                     //提交
                     }
 //                   System.out.println(users.toString());
-                    Intent intent=new Intent(Login_Activity.this,ShoppingCart_Fragment.class);
+                    Intent intent=new Intent(Login_Activity.this,MainActivity.class);
                     startActivity(intent);
 
 

@@ -32,7 +32,7 @@ public class Register_Activity extends AppCompatActivity {
         btn_register=findViewById(R.id.reg_btn_sure);
         btn_tologin=findViewById(R.id.reg_btn_login);
         inName=findViewById(R.id.reg_name);
-        if (NavUtils.getParentActivityName(Register_Activity.this)!=null){
+        if (NavUtils.getParentActivityName(Register_Activity.this)!=null){     //显示返回按钮
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         /******************点进去登入*******************/
