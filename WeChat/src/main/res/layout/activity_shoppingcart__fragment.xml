@@ -50,11 +50,16 @@
             android:layout_toRightOf="@+id/tv_i"
             android:textSize="23sp" />
 
-        <Button
+        <TextView
+            android:id="@+id/pay"
             android:layout_width="100sp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:text="结算" />
+            android:text="结算"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:background="#98F5FF"/>
 
 
     </RelativeLayout>
