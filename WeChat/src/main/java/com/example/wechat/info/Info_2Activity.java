@@ -18,9 +18,9 @@ public class Info_2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_info_2);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ActionBar actionBar = getActionBar();
-        if (NavUtils.getParentActivityName(Info_2Activity.this)!=null){     //显示返回按钮
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+//        if (NavUtils.getParentActivityName(Info_2Activity.this)!=null){     //显示返回按钮
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        }
     }
     //设置返回按钮
     @Override

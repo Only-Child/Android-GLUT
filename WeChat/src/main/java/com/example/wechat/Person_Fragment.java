@@ -31,6 +31,7 @@ public class Person_Fragment extends Fragment {
 
 
 
+
     int[] imageId = new int[]{R.drawable.img01, R.drawable.img02, R.drawable.img03,
             R.drawable.img04, R.drawable.img05, R.drawable.img06,
 
@@ -41,7 +42,7 @@ public class Person_Fragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.activity_person__fragment,null);
-         sp=getContext().getSharedPreferences("mrsoft",getContext().MODE_PRIVATE);
+//         sp=getContext().getSharedPreferences("mrsoft",getContext().MODE_PRIVATE);
 
         return view;
     }
@@ -76,6 +77,7 @@ public class Person_Fragment extends Fragment {
                 switch (position){
                     case 0:
                         Toast.makeText(getActivity(),map.get("名字").toString(),Toast.LENGTH_SHORT).show();
+                        System.out.println(sp.getString("username","")+" "+sp.getString("password",""));
                         break;
 
                     case 1:
@@ -90,6 +92,12 @@ public class Person_Fragment extends Fragment {
 
                     case 3:
                         Toast.makeText(getActivity(),map.get("名字").toString(),Toast.LENGTH_SHORT).show();
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.remove("username");
+                        editor.remove("password");
+                        editor.commit();
+                        refresh();
+                        //System.out.println(sp.getString("username","")+" "+sp.getString("password",""));
                         break;
 
                     default:
@@ -101,6 +109,13 @@ public class Person_Fragment extends Fragment {
             }
         });
 
+
+    }
+    // 刷新fragment
+    private void refresh() {
+        ShoppingCart_Fragment shoppingCart_fragment=new ShoppingCart_Fragment();
+        System.out.println("refresh...");
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, shoppingCart_fragment).addToBackStack(null).commitAllowingStateLoss();
     }
 }
 

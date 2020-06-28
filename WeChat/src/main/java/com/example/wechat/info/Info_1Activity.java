@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.wechat.R;
+import com.example.wechat.Register_Activity;
 import com.example.wechat.pojo.Goods;
 import com.example.wechat.utils.DataBaseOperate;
 import com.example.wechat.utils.MySqliteHelper;
@@ -27,13 +28,14 @@ public class Info_1Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_1);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ActionBar actionBar = getActionBar();
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        ActionBar actionBar = getActionBar();
         mtextView=findViewById(R.id.tv_info);
         mimageView=findViewById(R.id.miv);
         if (NavUtils.getParentActivityName(Info_1Activity.this)!=null){     //显示返回按钮
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
         //从数据库中获取商品数据
         SQLiteDatabase database = DataBaseOperate.create(Info_1Activity.this);
 
@@ -59,14 +61,14 @@ public class Info_1Activity extends AppCompatActivity {
 
 
     //设置返回按钮
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-        }
-        return true;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                finish();
+//                break;
+//        }
+//        return true;
+//    }
 
 }

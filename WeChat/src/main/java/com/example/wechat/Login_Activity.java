@@ -1,7 +1,10 @@
 package com.example.wechat;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -42,6 +45,10 @@ public class Login_Activity extends AppCompatActivity {
         remember=findViewById(R.id.radioRemember);
         register=findViewById(R.id.toRegister);
         /************获取组件结束***********/
+
+        if (NavUtils.getParentActivityName(Login_Activity.this)!=null){     //显示返回按钮
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         /*****************注册按钮事件**********/
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,4 +113,5 @@ public class Login_Activity extends AppCompatActivity {
 
         return  false;
     }
+
 }

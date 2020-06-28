@@ -1,6 +1,7 @@
 package com.example.wechat;
 
 //import android.app.Fragment;
+import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,11 +9,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
