@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="确定清空所有浏览历史记录?"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:background="#ffffff"
+        android:textColor="#000000"/>
+    
+    <Button
+        android:id="@+id/btn_determine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="#00BFFF"
+        android:text="确认" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="#fffffa"
+        android:text="取消" />
+
+
+</LinearLayout>
