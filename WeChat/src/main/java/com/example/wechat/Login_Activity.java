@@ -46,9 +46,9 @@ public class Login_Activity extends AppCompatActivity {
         register=findViewById(R.id.toRegister);
         /************获取组件结束***********/
 
-        if (NavUtils.getParentActivityName(Login_Activity.this)!=null){     //显示返回按钮
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+//        if (NavUtils.getParentActivityName(Login_Activity.this)!=null){     //显示返回按钮
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        }
         /*****************注册按钮事件**********/
         register.setOnClickListener(new View.OnClickListener() {
             @Override

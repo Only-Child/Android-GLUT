@@ -5,24 +5,67 @@
     android:layout_height="match_parent"
     >
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar"
+            android:background="@android:color/white"
+            android:fitsSystemWindows="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <LinearLayout
+                    android:id="@+id/ll_search"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/circle"
+                    android:gravity="center">
+
+                    <EditText
+                        android:id="@+id/tv_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:background="@null"
+                        android:textSize="16dp"
+                        android:text="搜索"/>
+                </LinearLayout>
+
+            </RelativeLayout>
+        </Toolbar>
 
         <ViewFlipper
             android:id="@+id/flipper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="35dp"
 
             />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/grd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
 
+            android:layout_marginTop="200dp"
+            />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffffff"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="300dp"
+
         />
 
     </RelativeLayout>
