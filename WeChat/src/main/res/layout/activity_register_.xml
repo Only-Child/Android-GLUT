@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".Register_Activity">
 
+
+
+
+
     <TextView
         android:layout_marginTop="60dp"
         android:id="@+id/reg_number1"
@@ -101,6 +105,7 @@
         android:layout_marginLeft="60dp"
         />
     <TextView
+        android:id="@+id/flag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="账号注册"
@@ -108,7 +113,15 @@
         android:layout_marginTop="5dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
+    <ImageButton
+        android:id="@+id/ib_return"
+        android:src="@drawable/icon_return"
+        android:scaleType="centerInside"
+        android:layout_width="50sp"
+        android:background="#00000000"
+        android:layout_alignBottom="@id/flag"
+        android:layout_height="60dp"
+        android:paddingTop="5dp"/>
 
 
 

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.wechat.utils.DataBaseOperate;
@@ -22,6 +23,13 @@ public class Register_Activity extends AppCompatActivity {
     private Button btn_register;
     private Button btn_tologin;
     private EditText inName;
+    private ImageButton back;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,9 +40,17 @@ public class Register_Activity extends AppCompatActivity {
         btn_register=findViewById(R.id.reg_btn_sure);
         btn_tologin=findViewById(R.id.reg_btn_login);
         inName=findViewById(R.id.reg_name);
-        if (NavUtils.getParentActivityName(Register_Activity.this)!=null){     //显示返回按钮
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        back=findViewById(R.id.ib_return);
+        /*返回按钮*/
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+//        if (NavUtils.getParentActivityName(Register_Activity.this)!=null){     //显示返回按钮
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        }
         /******************点进去登入*******************/
         btn_tologin.setOnClickListener(new View.OnClickListener() {  //返回登入
             @Override
@@ -75,7 +91,7 @@ public class Register_Activity extends AppCompatActivity {
         return  false;
     }
 
-    public boolean CheckIsDataAlreadyInDBorNot(){
+    public boolean CheckIsDataAlreadyInDBorNot(){                    //判断用户名是否注册过
         SQLiteDatabase sqLiteDatabase= DataBaseOperate.create(Register_Activity.this);
         String sql="select * from user where username=?";
         Cursor cursor=sqLiteDatabase.rawQuery(sql,new String[]{inUsername.getText().toString()});

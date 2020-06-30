@@ -7,10 +7,13 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -46,6 +49,13 @@ import com.example.wechat.utils.UiUtils;
  * Created by Administrator on 2016/2/18.
  */
 public class Home_Fragment extends Fragment {
+    //左右滑动时手指松开的X坐标
+    private float touchUpX;
+    //左右滑动时手指按下的X坐标
+    private float touchDownX;
+    //左右滑动时手指松开的X坐标
+    final int FLAG_MSG=0x001;     //消息代码
+    private Message message;    //发送的消息对象
     private ViewFlipper flipper;
     private int[] images = new int[]{R.drawable.img1, R.drawable.img2, R.drawable.img3,
             R.drawable.img4, R.drawable.img5, R.drawable.img6, R.drawable.img7, R.drawable.img8};  //定义图片数组
@@ -224,7 +234,46 @@ public class Home_Fragment extends Fragment {
         animations[1]=AnimationUtils.loadAnimation(getContext(),R.anim.slide_out_left);  //左侧平移退出动画
         flipper.setInAnimation(animations[0]);  //为flipper设置进入动画
         flipper.setOutAnimation(animations[1]);  //为flipper设置退出动画
-        flipper.startFlipping();
+//        flipper.startFlipping();
+        message=Message.obtain();      //获取Message对象
+        message.what=FLAG_MSG;        //设置消息代码
+        handler.sendMessage(message);  //发送消息
+        /**********拖动广告****************/
+        flipper.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    //取得左右滑动时手指按下的X坐标
+                    touchDownX = event.getX();
+                    return true;
+                }else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    //取得左右滑动时手指松开的X坐标
+                    touchUpX = event.getX();
+                    //从左往右，看下一张
+                    if (touchUpX - touchDownX > 100) {
+
+                        //设置图片切换的动画
+                        flipper.setInAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_left));
+                        flipper.setOutAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_right));
+                        //设置当前要看的图片
+                        flipper.showPrevious();
+                        //从右往左，看上一张
+                    } else if (touchDownX - touchUpX > 100) {
+
+                        //设置切换动画
+                        flipper.setOutAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_left));
+                        flipper.setInAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right));
+                        //设置要看的图片
+                        flipper.showNext();
+                    }
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
+       /**************拖动广告结束**********************/
     }
     //自定义装饰2
     class MyDecoration2 extends RecyclerView.ItemDecoration{
@@ -284,5 +333,16 @@ public class Home_Fragment extends Fragment {
         toolbar.getBackground().mutate().setAlpha( (int)(radio * 0xFF));
     }
 
-
+    /******************创建Handler实现3秒更新一次图片**************/
+    Handler handler=new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if (msg.what==FLAG_MSG){
+                flipper.showPrevious();  //切换到下一张图片
+                message=handler.obtainMessage(FLAG_MSG); //获取Message
+                handler.sendMessageDelayed(message,3000);  //延迟3秒发送消息
+            }
+        }
+    };
 }

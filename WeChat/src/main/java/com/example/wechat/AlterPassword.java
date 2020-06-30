@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.wechat.utils.DataBaseOperate;
@@ -22,8 +23,12 @@ public class AlterPassword extends AppCompatActivity {
              SharedPreferences sp;
         private String getPassword;          //获取SharedPreferences中保存的密码
         private String getUsername;             //获取SharedPreferences中保存的账号
+       private ImageButton back;
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +40,13 @@ public class AlterPassword extends AppCompatActivity {
         et_new_psw_again=findViewById(R.id.et_new_psw_again);
         btn_save=findViewById(R.id.btn_save);
         getPassword=sp.getString("password","");
+        back=findViewById(R.id.ib_return);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         /************单击事件*************/
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,5 +73,6 @@ public class AlterPassword extends AppCompatActivity {
         });
         /**********单价事件结束*********8*/
     }
+
 
 }

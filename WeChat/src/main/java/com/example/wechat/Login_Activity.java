@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -30,7 +31,13 @@ public class Login_Activity extends AppCompatActivity {
     private String getped;
     private String getuname;
     private RadioButton remember;
+    private ImageButton back;
     public List<User> users=new ArrayList<>();
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,14 @@ public class Login_Activity extends AppCompatActivity {
         remember=findViewById(R.id.radioRemember);
         register=findViewById(R.id.toRegister);
         /************获取组件结束***********/
+        // 返回上一个活动
+      back=findViewById(R.id.ib_return);
+      back.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              onBackPressed();
+          }
+      });
 
 //        if (NavUtils.getParentActivityName(Login_Activity.this)!=null){     //显示返回按钮
 //            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -70,6 +85,7 @@ public class Login_Activity extends AppCompatActivity {
 
         }
 
+
         /*************登入按钮单机事件**************/
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +110,8 @@ public class Login_Activity extends AppCompatActivity {
             }
         });
         /**********************单击事件结束************************/
+
+
     }
     public boolean iflogin(){
         SQLiteDatabase sqLiteDatabase=DataBaseOperate.create(Login_Activity.this);
@@ -113,5 +131,8 @@ public class Login_Activity extends AppCompatActivity {
 
         return  false;
     }
+
+
+
 
 }
