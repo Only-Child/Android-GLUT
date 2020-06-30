@@ -5,12 +5,14 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -18,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 import android.widget.ViewFlipper;
@@ -56,8 +59,8 @@ public class Home_Fragment extends Fragment {
     private Toolbar toolbar;
     boolean isExpand = false;
     private TransitionSet mSet;
-
-
+    private ScrollView mscrollView;
+    private ImageView imageView;
 
     @Nullable
     @Override
@@ -66,9 +69,48 @@ public class Home_Fragment extends Fragment {
         tvSearch=view.findViewById(R.id.tv_search);
         llSearch=view.findViewById(R.id.ll_search);
         toolbar=view.findViewById(R.id.toolbar);
+        mscrollView=view.findViewById(R.id.msceollview);
+        imageView=view.findViewById(R.id.iv_search);
+        minfo=view.findViewById(R.id.pu);
+        msort=view.findViewById(R.id.grd);
 
-//        设置全屏透明状态栏
+        //设置搜索结果
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=null;
+                //得到搜索结果
+                String result= String.valueOf(tvSearch.getText());
+                //跳到结果页面
+                Bundle bundle=new Bundle();
+                bundle.putString("result",result);
+                intent=new Intent(getActivity(),SearchResultActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
 
+            }
+        });
+        //scrollview滚动状态监听
+        mscrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                //改变toolbar的透明度
+                changeToolbarAlpha();
+                //滚动距离>=大图高度-toolbar高度 即toolbar完全盖住大图的时候 且不是伸展状态 进行伸展操作
+                if (mscrollView.getScrollY() >=flipper.getHeight() - toolbar.getHeight() && !isExpand) {
+                    expand();
+                    isExpand = true;
+                }
+                //滚动距离<=0时 即滚动到顶部时 且当前伸展状态 进行收缩操作
+                else if (mscrollView.getScrollY()<=0&& isExpand) {
+                    reduce();
+                    isExpand = false;
+                }
+            }
+        });
+
+
+         //设置全屏透明状态栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS |
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
@@ -108,12 +150,6 @@ public class Home_Fragment extends Fragment {
             }
         });
 
-
-
-
-
-        minfo=view.findViewById(R.id.pu);
-        msort=view.findViewById(R.id.grd);
         //声明布局启动器
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
@@ -241,4 +277,19 @@ public class Home_Fragment extends Fragment {
         //开始动画
         beginDelayedTransition(llSearch);
     }
+
+    private void changeToolbarAlpha() {
+        int scrollY = mscrollView.getScrollY();
+        //快速下拉会引起瞬间scrollY<0
+        if(scrollY<0){
+            toolbar.getBackground().mutate().setAlpha(0);
+            return;
+        }
+        //计算当前透明度比率
+        float radio= Math.min(1,scrollY/(flipper.getHeight()-toolbar.getHeight()*1f));
+        //设置透明度
+        toolbar.getBackground().mutate().setAlpha( (int)(radio * 0xFF));
+    }
+
+
 }

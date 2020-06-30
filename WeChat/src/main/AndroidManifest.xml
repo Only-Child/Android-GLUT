@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".SearchResultActivity"></activity>
         <activity android:name=".Browsing_history" />
         <activity android:name=".AlterPassword" />
         <activity
@@ -18,30 +19,31 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Login_Activity" />
         </activity>
-        <activity android:name=".Login_Activity" android:label="登入">
+        <activity
+            android:name=".Login_Activity"
+            android:label="登入">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Home_Fragment"/>
+                android:value=".Home_Fragment" />
         </activity>
         <activity
             android:name=".info.Info_5Activity"
             android:label="  " />
-
         <activity
             android:name=".info.Info_4Activity"
-            android:label="  "/>
+            android:label="  " />
         <activity
             android:name=".info.Info_3Activity"
-            android:label="  "/>
+            android:label="  " />
         <activity
             android:name=".info.Info_2Activity"
-            android:label="  "/>
+            android:label="  " />
         <activity
             android:name=".info.Info_1Activity"
             android:label="  ">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Home_Fragment"/>
+                android:value=".Home_Fragment" />
         </activity>
         <activity android:name=".Home_Fragment" />
         <activity android:name=".Extend_Fragment" />
