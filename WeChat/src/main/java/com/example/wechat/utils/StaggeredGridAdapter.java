@@ -68,6 +68,7 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
                 goodsimg.add(goodsitem);
                 cursor.moveToNext();
             }
+            cursor.close();
         }
         //将图片放入Imageview
         for(int i=0;i<50;i++){
@@ -78,7 +79,7 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
                 int icon = mcontext.getResources().getIdentifier(iconName, "drawable", mcontext.getPackageName());
                 // 设置图片
                 Glide.with(mcontext).load(icon).into(holder.iView);
-//                holder.iView.setImageResource(icon);
+
                 //设置文字
                 holder.textView.setText(goodsimg.get(i).getName()+"   ￥"+goodsimg.get(i).getPrice());
             }

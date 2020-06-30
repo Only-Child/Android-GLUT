@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.wechat.Browsing_history;
 import com.example.wechat.R;
+import com.example.wechat.SearchResultActivity;
 import com.example.wechat.pojo.Goods;
 
 import java.util.ArrayList;
@@ -57,9 +58,7 @@ public class LinearAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         result=cursor.getCount();
 
         if(result==0){
-            Toast.makeText(mcontext,"暂时没有此商品，请重新搜索吧~",Toast.LENGTH_SHORT);
-            ((RelativeViewHolder) holder).result1.setText("暂时没有此商品，请重新搜索吧");
-
+           //
         }else {
             if (cursor.moveToFirst()) {
                 for (int i = 0; i < cursor.getCount(); i++) {

@@ -83,21 +83,23 @@ public class Home_Fragment extends Fragment {
         msort=view.findViewById(R.id.grd);
 
         //设置搜索结果
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=null;
-                //得到搜索结果
-                String result= String.valueOf(tvSearch.getText());
-                //跳到结果页面
-                Bundle bundle=new Bundle();
-                bundle.putString("result",result);
-                intent=new Intent(getActivity(),SearchResultActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
 
-            }
-        });
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = null;
+                    //得到搜索结果
+                    String result = String.valueOf(tvSearch.getText());
+                    //跳到结果页面
+                    Bundle bundle = new Bundle();
+                    bundle.putString("result", result);
+                    intent = new Intent(getActivity(), SearchResultActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+
+                }
+            });
+
         //scrollview滚动状态监听
         mscrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
@@ -181,7 +183,7 @@ public class Home_Fragment extends Fragment {
         minfo.setAdapter(new StaggeredGridAdapter(getActivity(), new StaggeredGridAdapter.OnItemClickListener() {
             @Override
             public void onClick(int pos) {
-                Toast.makeText(getActivity(),"click..."+pos,Toast.LENGTH_SHORT).show();
+
                 //从数据库中获取商品数据
                 SQLiteDatabase database = DataBaseOperate.create(getContext());
                 //查询商品并保存
@@ -193,6 +195,7 @@ public class Home_Fragment extends Fragment {
                 goods1.setPrice( cursor.getDouble(cursor.getColumnIndex("price")));
                 goods1.setSrc(cursor.getString(cursor.getColumnIndex("src")));
                 goods1.setStorage(cursor.getInt(cursor.getColumnIndex("storage")));
+                cursor.close();
                 //将商品信息传到详情页
                 Intent intent=null;
                 Bundle bundle=new Bundle();

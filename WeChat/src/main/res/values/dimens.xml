@@ -5,5 +5,5 @@
     <dimen name="dividerHeight">1dp</dimen>
     <dimen name="dividerHeight2">5dp</dimen>
     <dimen name="dividerHeight3">0.5dp</dimen>
-    <dimen name="dividerHeight4">80dp</dimen>
+    <dimen name="dividerHeight4">40dp</dimen>
 </resources>

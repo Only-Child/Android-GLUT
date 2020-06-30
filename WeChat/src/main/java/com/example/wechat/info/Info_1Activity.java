@@ -11,6 +11,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +27,7 @@ public class Info_1Activity extends AppCompatActivity {
 
     private TextView mtextView;
     private ImageView mimageView;
+    private Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,14 @@ public class Info_1Activity extends AppCompatActivity {
 
         mtextView=findViewById(R.id.tv_info);
         mimageView=findViewById(R.id.miv);
+        button=findViewById(R.id.btn_return2);
+        //返回键
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         Bundle extras = getIntent().getExtras();
         String info = extras.getString("info");
         //从数据库中获取商品数据
@@ -58,6 +69,11 @@ public class Info_1Activity extends AppCompatActivity {
         //设置文字
         mtextView.setText(goods1.getName()+"   ￥"+goods1.getPrice());
 
+    }
+    //返回
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
 

@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <Button
+        android:id="@+id/btn_return"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/icon_return"
+        android:layout_marginTop="1dp"/>
 
+    <TextView
+        android:id="@+id/tv_fail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="暂时没有此商品，请重新搜索吧~"
+        android:textSize="20sp"
+        android:textColor="#000000"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="1dp"
         android:background="#ffffff" />
-</ScrollView>
+
+
+</LinearLayout>
