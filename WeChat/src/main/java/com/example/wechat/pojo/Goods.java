@@ -68,4 +68,6 @@ public class Goods {
     public int getStorage() {
         return storage;
     }
+
+
 }

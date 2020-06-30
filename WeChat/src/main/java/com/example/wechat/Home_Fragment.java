@@ -1,11 +1,12 @@
 package com.example.wechat;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
@@ -27,17 +28,14 @@ import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.wechat.info.Info_1Activity;
-import com.example.wechat.info.Info_2Activity;
-import com.example.wechat.info.Info_3Activity;
-import com.example.wechat.info.Info_4Activity;
-import com.example.wechat.info.Info_5Activity;
+import com.example.wechat.pojo.Goods;
+import com.example.wechat.utils.DataBaseOperate;
 import com.example.wechat.utils.HorAdapter;
 import com.example.wechat.utils.StaggeredGridAdapter;
 import com.example.wechat.utils.UiUtils;
@@ -174,30 +172,25 @@ public class Home_Fragment extends Fragment {
             @Override
             public void onClick(int pos) {
                 Toast.makeText(getActivity(),"click..."+pos,Toast.LENGTH_SHORT).show();
+                //从数据库中获取商品数据
+                SQLiteDatabase database = DataBaseOperate.create(getContext());
+                //查询商品并保存
+                Cursor cursor = database.rawQuery("select * from goods where id =?",new String[]{String.valueOf(pos+1)});
+                cursor.moveToFirst();
+                Goods goods1=new Goods();
+                goods1.setName(cursor.getString(cursor.getColumnIndex("name")));
+                goods1.setCategory(cursor.getString(cursor.getColumnIndex("category")));
+                goods1.setPrice( cursor.getDouble(cursor.getColumnIndex("price")));
+                goods1.setSrc(cursor.getString(cursor.getColumnIndex("src")));
+                goods1.setStorage(cursor.getInt(cursor.getColumnIndex("storage")));
+                //将商品信息传到详情页
                 Intent intent=null;
-                switch (pos){
-                    case 0:
-                        intent=new Intent(getActivity(), Info_1Activity.class);
-                        break;
-                    case 1:
-                        intent=new Intent(getActivity(), Info_2Activity.class);
-                        break;
-                    case 2:
-                        intent=new Intent(getActivity(), Info_3Activity.class);
-                        break;
+                Bundle bundle=new Bundle();
+                bundle.putString("info",goods1.getName());
+                intent=new Intent(getActivity(), Info_1Activity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
 
-                    case 3:
-                        intent=new Intent(getActivity(), Info_4Activity.class);
-                        break;
-
-                    case 4:
-                        intent=new Intent(getActivity(), Info_5Activity.class);
-                        break;
-                    default :
-                        break;
-                }if(intent!=null) {
-                    startActivity(intent);
-                }
             }
         }));
 
