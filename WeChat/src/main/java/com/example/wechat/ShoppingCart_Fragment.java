@@ -1,6 +1,7 @@
 package com.example.wechat;
 
 //import android.app.Fragment;
+
 import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -34,8 +35,7 @@ public class ShoppingCart_Fragment extends Fragment {
 
     private MyOpenHelper myOpenHelper;
     private int uid;
-    private String getSpU;//新加
-    SharedPreferences sp;  //新加
+    SharedPreferences sp;
 
 
     @Nullable
@@ -43,12 +43,10 @@ public class ShoppingCart_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_shoppingcart__fragment, null);
 
-        // 模拟用户id
-        uid = 1;
-
-       /*新加*/
-        sp=getContext().getSharedPreferences("mrsoft",getContext().MODE_PRIVATE);
-        getSpU=sp.getString("username","");
+        // 查询用户id
+        sp = getContext().getSharedPreferences("mrsoft", getContext().MODE_PRIVATE);
+        String username = sp.getString("username", "");
+        uid = findUid(username);
 
         myOpenHelper = new MyOpenHelper(getActivity());
 
@@ -63,7 +61,7 @@ public class ShoppingCart_Fragment extends Fragment {
         cursor.moveToNext();
 
         // 购物车为空
-        if (cursor.getInt(cursor.getColumnIndex("count(*)")) == 0){
+        if (cursor.getInt(cursor.getColumnIndex("count(*)")) == 0) {
             // 隐藏结算条
             view.findViewById(R.id.botm).setVisibility(View.GONE);
 
@@ -290,9 +288,19 @@ public class ShoppingCart_Fragment extends Fragment {
 
     // 刷新fragment
     private void refresh() {
-        ShoppingCart_Fragment shoppingCart_fragment=new ShoppingCart_Fragment();
+        ShoppingCart_Fragment shoppingCart_fragment = new ShoppingCart_Fragment();
         System.out.println("refresh...");
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, shoppingCart_fragment).addToBackStack(null).commitAllowingStateLoss();
+    }
+
+    // 查询uid
+    private int findUid(String username) {
+        SQLiteDatabase db = new MyOpenHelper(getActivity()).getReadableDatabase();
+        Cursor cursor = db.rawQuery("select id from user where username = ?", new String[]{username});
+        cursor.moveToNext();
+        int id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
+        db.close();
+        return id;
     }
 
 }
