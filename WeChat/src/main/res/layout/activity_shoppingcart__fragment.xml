@@ -27,28 +27,27 @@
         android:layout_width="match_parent"
         android:layout_height="50sp"
         android:layout_marginBottom="50dp"
-        android:background="#f5f5f5"
-       >
+        android:background="#f5f5f5">
 
         <TextView
             android:id="@+id/tv_i"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
+            android:gravity="center_vertical|left"
             android:text="合计: "
             android:textColor="#000000"
-            android:gravity="center_vertical|left"
-            android:textSize="25sp"/>
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/tv_carsum"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:text="合计："  
-            android:textColor="#ff9912"
-            android:gravity="center"
             android:layout_toRightOf="@+id/tv_i"
+            android:gravity="center"
+            android:text="合计："
+            android:textColor="#ff9912"
             android:textSize="23sp" />
 
         <TextView
@@ -56,12 +55,11 @@
             android:layout_width="100sp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:text="结算"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="#000000"
             android:background="#98F5FF"
-            />
+            android:gravity="center"
+            android:text="结算"
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
 
     </RelativeLayout>

@@ -3,6 +3,7 @@ package com.example.wechat;
 //import android.app.Fragment;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -46,45 +47,51 @@ public class ShoppingCart_Fragment extends Fragment {
         // 查询用户id
         sp = getContext().getSharedPreferences("mrsoft", getContext().MODE_PRIVATE);
         String username = sp.getString("username", "");
-        uid = findUid(username);
-
-        myOpenHelper = new MyOpenHelper(getActivity());
-
-        // 获取listview设置适配器
-        ListView listView = view.findViewById(R.id.lv_car);
-        // 设置监听器，传入用户id和当前view对象
-        listView.setAdapter(new MyAdapter(uid, view));
-
-        // 查询用户购物车总记录条数
-        SQLiteDatabase db = myOpenHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select count(*) from car where uid = ?", new String[]{String.valueOf(uid)});
-        cursor.moveToNext();
-
-        // 购物车为空
-        if (cursor.getInt(cursor.getColumnIndex("count(*)")) == 0) {
-            // 隐藏结算条
+        if (username.equals("")){
             view.findViewById(R.id.botm).setVisibility(View.GONE);
+            Toast.makeText(getActivity(), "清先登录", Toast.LENGTH_SHORT).show();
+            return view;
+        }else {
+            uid = findUid(username);
 
-            Toast.makeText(getActivity(), "购物车为空，赶紧去购物吧~", Toast.LENGTH_SHORT).show();
-        }
+            myOpenHelper = new MyOpenHelper(getActivity());
 
+            // 获取listview设置适配器
+            ListView listView = view.findViewById(R.id.lv_car);
+            // 设置监听器，传入用户id和当前view对象
+            listView.setAdapter(new MyAdapter(uid, view));
 
-        // 结算
-        view.findViewById(R.id.pay).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SQLiteDatabase db = myOpenHelper.getReadableDatabase();
-                db.execSQL("delete from car where uid = ?", new String[]{String.valueOf(uid)});
-                refresh();
-                Toast.makeText(getActivity(), "购物车已清空~", Toast.LENGTH_SHORT).show();
+            // 查询用户购物车总记录条数
+            SQLiteDatabase db = myOpenHelper.getReadableDatabase();
+            Cursor cursor = db.rawQuery("select count(*) from car where uid = ?", new String[]{String.valueOf(uid)});
+            cursor.moveToNext();
 
-                db.close();
+            // 购物车为空
+            if (cursor.getInt(cursor.getColumnIndex("count(*)")) == 0) {
+                // 隐藏结算条
+                view.findViewById(R.id.botm).setVisibility(View.GONE);
+
+                Toast.makeText(getActivity(), "购物车为空，赶紧去购物吧~", Toast.LENGTH_SHORT).show();
             }
-        });
 
-        cursor.close();
-        db.close();
-        return view;
+
+            // 结算
+            view.findViewById(R.id.pay).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SQLiteDatabase db = myOpenHelper.getReadableDatabase();
+                    db.execSQL("delete from car where uid = ?", new String[]{String.valueOf(uid)});
+                    refresh();
+                    Toast.makeText(getActivity(), "购物车已清空~", Toast.LENGTH_SHORT).show();
+
+                    db.close();
+                }
+            });
+
+            cursor.close();
+            db.close();
+            return view;
+        }
     }
 
 
