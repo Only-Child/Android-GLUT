@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -20,18 +21,23 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import static java.security.AccessController.getContext;
+
 public class Browsing_history extends AppCompatActivity {
 
     private int uid; //用户id
     private MyOpenHelper myOpenHelper;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browsing_history);
 
-        // 模拟查询uid
-        uid = 1;
+        // 查询用户id
+        sp = Browsing_history.this.getSharedPreferences("mrsoft", Browsing_history.this.MODE_PRIVATE);
+        String username = sp.getString("username", "");
+        uid = findUid(username);
 
         myOpenHelper = new MyOpenHelper(this);
 
@@ -167,5 +173,14 @@ public class Browsing_history extends AppCompatActivity {
 
     }
 
+    // 查询uid
+    private int findUid(String username) {
+        SQLiteDatabase db = new MyOpenHelper(Browsing_history.this).getReadableDatabase();
+        Cursor cursor = db.rawQuery("select id from user where username = ?", new String[]{username});
+        cursor.moveToNext();
+        int id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
+        db.close();
+        return id;
+    }
 
 }

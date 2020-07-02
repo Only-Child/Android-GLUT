@@ -1,7 +1,9 @@
 package com.example.wechat;
 
 //import android.app.Fragment;
+
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -34,8 +36,7 @@ public class ShoppingCart_Fragment extends Fragment {
 
     private MyOpenHelper myOpenHelper;
     private int uid;
-    private String getSpU;//新加
-    SharedPreferences sp;  //新加
+    SharedPreferences sp;
 
 
     @Nullable
@@ -43,50 +44,54 @@ public class ShoppingCart_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_shoppingcart__fragment, null);
 
-        // 模拟用户id
-        uid = 1;
-
-       /*新加*/
-        sp=getContext().getSharedPreferences("mrsoft",getContext().MODE_PRIVATE);
-        getSpU=sp.getString("username","");
-
-        myOpenHelper = new MyOpenHelper(getActivity());
-
-        // 获取listview设置适配器
-        ListView listView = view.findViewById(R.id.lv_car);
-        // 设置监听器，传入用户id和当前view对象
-        listView.setAdapter(new MyAdapter(uid, view));
-
-        // 查询用户购物车总记录条数
-        SQLiteDatabase db = myOpenHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select count(*) from car where uid = ?", new String[]{String.valueOf(uid)});
-        cursor.moveToNext();
-
-        // 购物车为空
-        if (cursor.getInt(cursor.getColumnIndex("count(*)")) == 0){
-            // 隐藏结算条
+        // 查询用户id
+        sp = getContext().getSharedPreferences("mrsoft", getContext().MODE_PRIVATE);
+        String username = sp.getString("username", "");
+        if (username.equals("")){
             view.findViewById(R.id.botm).setVisibility(View.GONE);
+            Toast.makeText(getActivity(), "清先登录", Toast.LENGTH_SHORT).show();
+            return view;
+        }else {
+            uid = findUid(username);
 
-            Toast.makeText(getActivity(), "购物车为空，赶紧去购物吧~", Toast.LENGTH_SHORT).show();
-        }
+            myOpenHelper = new MyOpenHelper(getActivity());
 
+            // 获取listview设置适配器
+            ListView listView = view.findViewById(R.id.lv_car);
+            // 设置监听器，传入用户id和当前view对象
+            listView.setAdapter(new MyAdapter(uid, view));
 
-        // 结算
-        view.findViewById(R.id.pay).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SQLiteDatabase db = myOpenHelper.getReadableDatabase();
-                db.execSQL("delete from car where uid = ?", new String[]{String.valueOf(uid)});
-                refresh();
-                Toast.makeText(getActivity(), "购物车已清空~", Toast.LENGTH_SHORT).show();
+            // 查询用户购物车总记录条数
+            SQLiteDatabase db = myOpenHelper.getReadableDatabase();
+            Cursor cursor = db.rawQuery("select count(*) from car where uid = ?", new String[]{String.valueOf(uid)});
+            cursor.moveToNext();
 
-                db.close();
+            // 购物车为空
+            if (cursor.getInt(cursor.getColumnIndex("count(*)")) == 0) {
+                // 隐藏结算条
+                view.findViewById(R.id.botm).setVisibility(View.GONE);
+
+                Toast.makeText(getActivity(), "购物车为空，赶紧去购物吧~", Toast.LENGTH_SHORT).show();
             }
-        });
 
-        cursor.close();
-        db.close();
-        return view;
+
+            // 结算
+            view.findViewById(R.id.pay).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SQLiteDatabase db = myOpenHelper.getReadableDatabase();
+                    db.execSQL("delete from car where uid = ?", new String[]{String.valueOf(uid)});
+                    refresh();
+                    Toast.makeText(getActivity(), "购物车已清空~", Toast.LENGTH_SHORT).show();
+
+                    db.close();
+                }
+            });
+
+            cursor.close();
+            db.close();
+            return view;
+        }
     }
 
 
@@ -290,9 +295,19 @@ public class ShoppingCart_Fragment extends Fragment {
 
     // 刷新fragment
     private void refresh() {
-        ShoppingCart_Fragment shoppingCart_fragment=new ShoppingCart_Fragment();
+        ShoppingCart_Fragment shoppingCart_fragment = new ShoppingCart_Fragment();
         System.out.println("refresh...");
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, shoppingCart_fragment).addToBackStack(null).commitAllowingStateLoss();
+    }
+
+    // 查询uid
+    private int findUid(String username) {
+        SQLiteDatabase db = new MyOpenHelper(getActivity()).getReadableDatabase();
+        Cursor cursor = db.rawQuery("select id from user where username = ?", new String[]{username});
+        cursor.moveToNext();
+        int id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("id")));
+        db.close();
+        return id;
     }
 
 }
