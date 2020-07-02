@@ -64,6 +64,7 @@ public class Info_1Activity extends AppCompatActivity {
         // 拿到图片ID
         int icon = this.getResources().getIdentifier(iconName, "drawable", this.getPackageName());
         // 设置图片
+
         Glide.with(this).load(icon).into(mimageView);
 
         //设置文字

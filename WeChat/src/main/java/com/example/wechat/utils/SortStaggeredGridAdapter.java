@@ -1,20 +1,18 @@
 package com.example.wechat.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.example.wechat.R;
@@ -24,38 +22,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-
-public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdapter.LinearViewHolder> {
+public class SortStaggeredGridAdapter extends RecyclerView.Adapter<SortStaggeredGridAdapter.LinearViewHolder> {
 
 
     private List<Goods> goodsimg=new ArrayList<>();
     private Context mcontext;
     private OnItemClickListener monItemClickListener;
+    private String mpos;
+    //从数据库中获取商品数据
+   private  SQLiteDatabase mdatabase;
 
-
-
-
-
-    public StaggeredGridAdapter(Context context,OnItemClickListener onItemClickListener) {
+    public SortStaggeredGridAdapter(Context context, OnItemClickListener onItemClickListener,String pos,SQLiteDatabase database) {
         mcontext=context;
         monItemClickListener=onItemClickListener;
+        mpos=pos;
+        mdatabase=database;
     }
+
 
     @NonNull
     @Override
-    public StaggeredGridAdapter.LinearViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SortStaggeredGridAdapter.LinearViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //设置布局
-        return new LinearViewHolder(LayoutInflater.from(mcontext).inflate(R.layout.activity_main_item,parent,false));
+        return new LinearViewHolder(LayoutInflater.from(mcontext).inflate(R.layout.activity_main_item, parent, false));
     }
-
     @Override
-    public void onBindViewHolder(@NonNull StaggeredGridAdapter.LinearViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull SortStaggeredGridAdapter.LinearViewHolder holder, final int position) {
 
-        //从数据库中获取商品数据
-        SQLiteDatabase database = DataBaseOperate.create(mcontext);
         //查询商品图片并保存
-        Cursor cursor = database.query("goods", null, null, null,null,null,null);
+        Cursor cursor = mdatabase.query("goods", null, "category = ?", new String[]{mpos},null,null,null);
         if(cursor.moveToFirst()){
             for(int i = 0; i<cursor.getCount();i++)
             {
@@ -71,7 +66,7 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
 
         }
         cursor.close();
-        database.close();
+
         //将图片放入Imageview
         for(int i=0;i<50;i++){
             if(position==i){
@@ -100,9 +95,14 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
 
     @Override
     public int getItemCount() {
-        return 50;
+        //查询商品图片并保存
+        Cursor cursor = mdatabase.query("goods", null, "category = ?", new String[]{mpos},null,null,null);
+        //得到商品数
+        int num=cursor.getCount();
+        cursor.close();
+        return num;
     }
-    class LinearViewHolder extends RecyclerView.ViewHolder{
+    static class LinearViewHolder extends RecyclerView.ViewHolder{
 
         private ImageView iView;
         private TextView textView;
@@ -115,7 +115,7 @@ public class StaggeredGridAdapter extends RecyclerView.Adapter<StaggeredGridAdap
     public interface OnItemClickListener{
         void onClick(int pos);
     }
-    //根据图片路径获得id
+
 
 
 }

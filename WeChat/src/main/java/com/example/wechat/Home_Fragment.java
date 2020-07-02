@@ -82,7 +82,7 @@ public class Home_Fragment extends Fragment {
         minfo=view.findViewById(R.id.pu);
         msort=view.findViewById(R.id.grd);
 
-        //设置搜索结果
+
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -171,7 +171,12 @@ public class Home_Fragment extends Fragment {
         msort.setAdapter(new HorAdapter(getActivity(), new HorAdapter.OnItemClickListener() {
             @Override
             public void onClick(int pos) {
-                Toast.makeText(getActivity(),"click..."+pos,Toast.LENGTH_SHORT).show();
+                //将选中的分类位置信息传递过去，0服装，1家电，2食品
+                Bundle bundle=new Bundle();
+                bundle.putInt("pos",pos);
+                Intent intent=new Intent(getActivity(),SortResultActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         }));
 
@@ -186,6 +191,7 @@ public class Home_Fragment extends Fragment {
 
                 //从数据库中获取商品数据
                 SQLiteDatabase database = DataBaseOperate.create(getContext());
+                //设置搜索结果
                 //查询商品并保存
                 Cursor cursor = database.rawQuery("select * from goods where id =?",new String[]{String.valueOf(pos+1)});
                 cursor.moveToFirst();
@@ -196,6 +202,7 @@ public class Home_Fragment extends Fragment {
                 goods1.setSrc(cursor.getString(cursor.getColumnIndex("src")));
                 goods1.setStorage(cursor.getInt(cursor.getColumnIndex("storage")));
                 cursor.close();
+                database.close();
                 //将商品信息传到详情页
                 Intent intent=null;
                 Bundle bundle=new Bundle();

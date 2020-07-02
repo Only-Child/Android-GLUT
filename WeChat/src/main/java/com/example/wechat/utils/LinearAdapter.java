@@ -32,12 +32,17 @@ public class LinearAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private String result1;
     private int result;
     private List<Goods> goodsimg=new ArrayList<>();
+    //从数据库中获取商品数据
+    private SQLiteDatabase database;
 
-    public LinearAdapter(Context context,OnItemClickListener onItemClickListener,String result){
+
+    public LinearAdapter(Context context,OnItemClickListener onItemClickListener,String result,SQLiteDatabase mdatabase){
         mcontext=context;
         monItemClickListener=onItemClickListener;
         result1=result;
+        database=mdatabase;
     }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,8 +55,6 @@ public class LinearAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
 
-        //从数据库中获取商品数据
-        SQLiteDatabase database = DataBaseOperate.create(mcontext);
         //查询商品图片并保存
         Cursor cursor = database.rawQuery("select * from goods where name like '%"+result1+"%'",null);
         //得到结果数
@@ -71,9 +74,10 @@ public class LinearAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     goodsimg.add(goodsitem);
                     cursor.moveToNext();
                 }
-               cursor.close();
-            }
 
+
+            }
+            cursor.close();
             //将图片放入Imageview
             for (int i = 0; i < 50; i++) {
                 if (position == i) {
@@ -100,8 +104,7 @@ public class LinearAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        //从数据库中获取商品数据
-        SQLiteDatabase database = DataBaseOperate.create(mcontext);
+
         //查询商品图片并保存
         Cursor cursor = database.rawQuery("select * from goods where name like '%"+result1+"%'",null);
         //得到结果数

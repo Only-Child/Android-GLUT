@@ -83,16 +83,18 @@ public class SearchResultActivity extends AppCompatActivity {
                             cursor.moveToNext();
                         }
                         cursor.close();
+                        database.close();
+                    }
                         //查询商品保存并传递到详情页
                         Bundle bundle = new Bundle();
                         bundle.putString("info", goodsimg.get(pos).getName());
                         Intent intent = new Intent(SearchResultActivity.this, Info_1Activity.class);
                         intent.putExtras(bundle);
                         startActivity(intent);
-                    }
+
                 }
 
-        },result));
+        },result,DataBaseOperate.create(this)));
 
     }
     //自定义装饰2
