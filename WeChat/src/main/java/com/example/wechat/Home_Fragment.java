@@ -42,9 +42,6 @@ import com.example.wechat.utils.DataBaseOperate;
 import com.example.wechat.utils.HorAdapter;
 import com.example.wechat.utils.StaggeredGridAdapter;
 import com.example.wechat.utils.UiUtils;
-
-
-
 /**
  * Created by Administrator on 2016/2/18.
  */

@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.wechat.Browsing_history;
 import com.example.wechat.R;
 import com.example.wechat.SearchResultActivity;
@@ -85,11 +87,16 @@ public class LinearAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     String iconName = goodsimg.get(i).getSrc();
                     // 拿到图片ID
                     int icon = mcontext.getResources().getIdentifier(iconName, "drawable", mcontext.getPackageName());
-                    // 设置图片
-                    Glide.with(mcontext).load(icon).into(((RelativeViewHolder) holder).imageView);
+                    // 设置图片添加圆角
+                    RequestOptions requestOptions=new RequestOptions().error(R.drawable.customitem).bitmapTransform(new RoundedCorners(10));
+                    Glide.with(mcontext).load(icon).apply(requestOptions).into(((RelativeViewHolder) holder).imageView);
 
                     //设置文字
-                    ((RelativeViewHolder) holder).result1.setText(goodsimg.get(i).getName() + "   ￥" + goodsimg.get(i).getPrice());
+                    ((RelativeViewHolder) holder).result1.setText(goodsimg.get(i).getName() );
+
+                    ((RelativeViewHolder) holder).mprice.setText( "￥" + goodsimg.get(i).getPrice());
+
+                    ((RelativeViewHolder) holder).mstock.setText("库存："+goodsimg.get(i).getStorage());
                 }
             }
 
@@ -115,10 +122,14 @@ public class LinearAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     static class RelativeViewHolder extends RecyclerView.ViewHolder{
         private ImageView imageView;
         private TextView result1;
+        private TextView mprice;
+        private TextView mstock;
         RelativeViewHolder(@NonNull View itemView) {
             super(itemView);
             result1=itemView.findViewById(R.id.tv_result1);
             imageView=itemView.findViewById(R.id.iv_result1);
+            mprice=itemView.findViewById(R.id.tv_price);
+            mstock=itemView.findViewById(R.id.tv_stock);
         }
     }
 

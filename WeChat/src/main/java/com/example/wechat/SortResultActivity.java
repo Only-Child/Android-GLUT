@@ -45,7 +45,7 @@ public class SortResultActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         final int pos2 = extras.getInt("pos");
 
-        Log.d("你记得上次", String.valueOf(pos2));
+
         String goodsName2=getGoodsName(pos2);
 
         //设置布局启动器
@@ -62,7 +62,6 @@ public class SortResultActivity extends AppCompatActivity {
                 SQLiteDatabase database = DataBaseOperate.create(SortResultActivity.this);
                 //查询商品并保存
                 Cursor cursor = database.query("goods", null, "category = ?", new String[]{goodsName},null,null,null);
-                Log.d("上的市场", String.valueOf(cursor.getCount()));
                 if(cursor.moveToFirst()) {
                     for (int i = 0; i < cursor.getCount(); i++) {
                         Goods goodsitem = new Goods();
@@ -81,7 +80,7 @@ public class SortResultActivity extends AppCompatActivity {
                 //将商品信息传到详情页
                 Bundle bundle=new Bundle();
                 bundle.putString("info",goodsList.get(pos).getName());
-                Log.d("商品名",goodsList.get(pos2).getName());
+
                 Intent intent=new Intent(SortResultActivity.this, Info_1Activity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
