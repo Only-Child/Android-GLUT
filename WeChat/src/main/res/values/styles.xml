@@ -15,4 +15,9 @@
         <item name="android:windowExitAnimation">@anim/popup_out</item>
     </style>
 
+    <!--qidong -->
+    <style name="FixSystemWindowTheme" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>
