@@ -1,6 +1,7 @@
 package com.example.wechat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.os.Message;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,6 +44,9 @@ import com.example.wechat.utils.DataBaseOperate;
 import com.example.wechat.utils.HorAdapter;
 import com.example.wechat.utils.StaggeredGridAdapter;
 import com.example.wechat.utils.UiUtils;
+
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by Administrator on 2016/2/18.
  */
@@ -66,6 +71,7 @@ public class Home_Fragment extends Fragment {
     private TransitionSet mSet;
     private ScrollView mscrollView;
     private ImageView imageView;
+    private SharedPreferences msharedPreferences;
 
     @Nullable
     @Override
@@ -78,6 +84,8 @@ public class Home_Fragment extends Fragment {
         imageView=view.findViewById(R.id.iv_search);
         minfo=view.findViewById(R.id.pu);
         msort=view.findViewById(R.id.grd);
+
+        msharedPreferences=getActivity().getSharedPreferences("mrsoft",MODE_PRIVATE);
 
 
 
@@ -199,8 +207,30 @@ public class Home_Fragment extends Fragment {
                 goods1.setSrc(cursor.getString(cursor.getColumnIndex("src")));
                 goods1.setStorage(cursor.getInt(cursor.getColumnIndex("storage")));
                 cursor.close();
+
+                //将商品信息传到详情页,判断是否登录，若登陆将其加入历史记录
+
+                if(msharedPreferences.getString("username",null)!=null){
+                    String name=msharedPreferences.getString("username","");
+
+                    //查表得到userid
+                    Cursor cursor2=database.rawQuery("select * from user where username =?",new String[]{name});
+                    cursor2.moveToFirst();
+                    int userid=cursor2.getInt(cursor2.getColumnIndex("id"));
+                    cursor2.close();
+                    //查表得到goodsid
+                    Cursor cursor3=database.rawQuery("select * from goods where name =?",new String[]{goods1.getName()});
+                    cursor3.moveToFirst();
+                    int goodsid=cursor3.getInt(cursor3.getColumnIndex("id"));
+                    cursor3.close();
+                    //插入表中
+                    Cursor cursor4 = database.rawQuery("select * from history where gid=?", new String[]{String.valueOf(goodsid)});
+                    if(cursor4.getCount()==0) {
+                        database.execSQL("insert into history(uid,gid) values(?,?)", new String[]{String.valueOf(userid), String.valueOf(goodsid)});
+                    }
+                    cursor4.close();
+                }
                 database.close();
-                //将商品信息传到详情页
                 Intent intent=null;
                 Bundle bundle=new Bundle();
                 bundle.putString("info",goods1.getName());

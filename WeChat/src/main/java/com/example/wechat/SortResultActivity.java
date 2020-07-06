@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
@@ -28,12 +29,14 @@ public class SortResultActivity extends AppCompatActivity {
     private RecyclerView mrecyclerView;
     private Button mbutton;
     private List<Goods> goodsList=new ArrayList<>();
+    private SharedPreferences msharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort_result);
         mrecyclerView=findViewById(R.id.ry_sort);
         mbutton=findViewById(R.id.btn_return);
+        msharedPreferences=getSharedPreferences("mrsoft",MODE_PRIVATE);
         //返回键
         mbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +79,25 @@ public class SortResultActivity extends AppCompatActivity {
 
                 }
                 cursor.close();
+                if(msharedPreferences.getString("username",null)!=null){
+                    String name=msharedPreferences.getString("username","");
+                    //查表得到userid
+                    Cursor cursor2=database.rawQuery("select * from user where username =?",new String[]{name});
+                    cursor2.moveToFirst();
+                    int userid=cursor2.getInt(cursor2.getColumnIndex("id"));
+                    cursor2.close();
+                    //查表得到goodsid
+                    Cursor cursor3=database.rawQuery("select * from goods where name =?",new String[]{goodsList.get(pos).getName()});
+                    cursor3.moveToFirst();
+                    int goodsid=cursor3.getInt(cursor3.getColumnIndex("id"));
+                    cursor3.close();
+                    //插入表中
+                    Cursor cursor4 = database.rawQuery("select * from history where gid=?", new String[]{String.valueOf(goodsid)});
+                    if(cursor4.getCount()==0) {
+                        database.execSQL("insert into history(uid,gid) values(?,?)", new String[]{String.valueOf(userid), String.valueOf(goodsid)});
+                    }
+                    cursor4.close();
+                }
                 database.close();
                 //将商品信息传到详情页
                 Bundle bundle=new Bundle();
